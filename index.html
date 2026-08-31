@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectBridge - Connect Ideas With Companies</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* NAVBAR */
+        nav {
+            height: 70px;
+            background: #0f172a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        nav ul li a:hover {
+            color: #38bdf8;
+        }
+
+        .login {
+            border: 1px solid #38bdf8;
+            padding: 9px 18px;
+            border-radius: 8px;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 560px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 8%;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+        }
+
+        .hero-text {
+            width: 55%;
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            font-size: 19px;
+            line-height: 1.7;
+            color: #dbeafe;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .primary {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .secondary {
+            border: 1px solid white;
+            color: white;
+        }
+
+        .hero-card {
+            width: 330px;
+            background: white;
+            color: #0f172a;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .hero-card h2 {
+            margin-bottom: 15px;
+        }
+
+        .hero-card p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .stat {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        /* ABOUT */
+        .section {
+            padding: 70px 8%;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .section > p {
+            max-width: 700px;
+            margin: auto;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* FEATURES */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 45px;
+        }
+
+        .feature {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* PROJECTS */
+        .projects {
+            background: #eef2ff;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .project {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: left;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .project h3 {
+            margin-bottom: 10px;
+        }
+
+        .project p {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .view-btn {
+            border: none;
+            background: #0f172a;
+            color: white;
+            padding: 10px 17px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .view-btn:hover {
+            background: #1e3a8a;
+        }
+
+        /* HOW IT WORKS */
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 45px;
+        }
+
+        .step {
+            width: 250px;
+            padding: 25px;
+        }
+
+        .number {
+            width: 50px;
+            height: 50px;
+            margin: auto auto 15px;
+            border-radius: 50%;
+            background: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* CTA */
+        .cta {
+            background: #0f172a;
+            color: white;
+            padding: 70px 8%;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #020617;
+            color: #94a3b8;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* MOBILE */
+        @media(max-width: 800px) {
+
+            nav ul {
+                display: none;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-text {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .features,
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+        <div class="logo">ProjectBridge</div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+
+        <a href="#" class="login">Login</a>
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-text">
+
+            <h1>
+                Great Ideas Deserve
+                <span>A Second Chance.</span>
+            </h1>
+
+            <p>
+                We connect talented student innovators with companies
+                looking for fresh ideas, real solutions and future talent.
+            </p>
+
+            <div class="buttons">
+                <a href="#projects" class="btn primary">
+                    Explore Projects
+                </a>
+
+                <a href="#submit" class="btn secondary">
+                    Submit Your Project
+                </a>
+            </div>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <h2>🚀 Your Project Could Be Next</h2>
+
+            <p>
+                Didn't win the competition?
+                That doesn't mean your idea has no value.
+            </p>
+
+            <div class="stat">
+                <span>Student Ideas</span>
+                <strong>100+</strong>
+            </div>
+
+            <div class="stat">
+                <span>Companies</span>
+                <strong>25+</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section class="section" id="about">
+
+        <h2>Why ProjectBridge?</h2>
+
+        <p>
+            Thousands of student projects are created every year.
+            Many great ideas disappear after competitions.
+            ProjectBridge gives those ideas a path toward real-world
+            opportunities.
+        </p>
+
+
+        <div class="features">
+
+            <div class="feature">
+
+                <div class="feature-icon">💡</div>
+
+                <h3>Discover Ideas</h3>
+
+                <p>
+                    Companies can discover innovative student projects
+                    based on their requirements.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">🎓</div>
+
+                <h3>Student Innovation</h3>
+
+                <p>
+                    Students get an opportunity to showcase projects
+                    beyond competitions.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">🔐</div>
+
+                <h3>Protected Details</h3>
+
+                <p>
+                    Sensitive project information is not publicly
+                    exposed. Communication is handled through the platform.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+
+    <section class="section projects" id="projects">
+
+        <h2>Featured Projects</h2>
+
+        <p>
+            Explore innovative projects created by student developers
+            and innovators.
+        </p>
+
+
+        <div class="project-grid">
+
+            <div class="project">
+
+                <span class="tag">Artificial Intelligence</span>
+
+                <h3>Smart Traffic System</h3>
+
+                <p>
+                    AI-based solution designed to improve traffic
+                    management and reduce congestion.
+                </p>
+
+                <button class="view-btn"
+                    onclick="contactProject('Smart Traffic System')">
+                    Interested
+                </button>
+
+            </div>
+
+
+            <div class="project">
+
+                <span class="tag">Healthcare</span>
+
+                <h3>Health Monitoring Platform</h3>
+
+                <p>
+                    A student-built technology concept for monitoring
+                    health-related information.
+                </p>
+
+                <button class="view-btn"
+                    onclick="contactProject('Health Monitoring Platform')">
+                    Interested
+                </button>
+
+            </div>
+
+
+            <div class="project">
+
+                <span class="tag">Agriculture</span>
+
+                <h3>Smart Farming Solution</h3>
+
+                <p>
+                    Technology-driven farming concept designed to help
+                    farmers make better decisions.
+                </p>
+
+                <button class="view-btn"
+                    onclick="contactProject('Smart Farming Solution')">
+                    Interested
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+
+    <section class="section" id="how">
+
+        <h2>How It Works</h2>
+
+        <p>
+            A simple bridge between student innovation and industry.
+        </p>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="number">1</div>
+
+                <h3>Student Submits</h3>
+
+                <p>
+                    Students submit their projects and provide
+                    important information about their solution.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">2</div>
+
+                <h3>Company Discovers</h3>
+
+                <p>
+                    Companies browse projects according to their
+                    interests and requirements.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">3</div>
+
+                <h3>We Connect</h3>
+
+                <p>
+                    Interested companies contact the ProjectBridge
+                    team to connect with the project owner.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUBMIT -->
+
+    <section class="cta" id="submit">
+
+        <h2>Have a Project With Potential?</h2>
+
+        <p>
+            Don't let your idea disappear after a competition.
+            Give it another opportunity.
+        </p>
+
+        <a href="mailto:projects@projectbridge.com"
+           class="btn primary">
+            Submit Your Project
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 ProjectBridge. Connecting Innovation With Opportunity.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        function contactProject(projectName) {
+
+            alert(
+                "Thank you for your interest in " +
+                projectName +
+                "!\n\nOur team will help connect you with the project owner."
+            );
+
+        }
+
+    </script>
+
+</body>
+</html>
