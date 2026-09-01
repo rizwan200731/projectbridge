@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ProjectBridge - Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            width: 380px;
+            background: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .signup {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .signup a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back a {
+            color: #555;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="logo">
+            ProjectBridge
+        </div>
+
+        <p class="subtitle">
+            Welcome back! Login to continue.
+        </p>
+
+        <form id="loginForm">
+
+            <label>Email</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <div class="signup">
+            Don't have an account?
+            <a href="signup.html">Sign Up</a>
+        </div>
+
+        <div class="back">
+            <a href="index.html">← Back to ProjectBridge</a>
+        </div>
+
+    </div>
+
+    <script>
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const savedUser = JSON.parse(
+        localStorage.getItem("projectBridgeUser")
+    );
+
+    if (!savedUser) {
+        alert("No account found. Please create an account first.");
+        return;
+    }
+
+    if (
+        email === savedUser.email &&
+        password === savedUser.password
+    ) {
+
+        localStorage.setItem("loggedIn", "true");
+
+        alert("Login successful! 🚀");
+
+        if (savedUser.role === "student") {
+            window.location.href = "student-dashboard.html";
+        } else {
+            window.location.href = "company-dashboard.html";
+        }
+
+    } else {
+
+        alert("Incorrect email or password ❌");
+
+    }
+});
+</script>
+
+</body>
+</html>

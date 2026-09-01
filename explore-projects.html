@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explore Projects - ProjectBridge</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+        }
+
+        nav {
+            background: #0f172a;
+            color: white;
+
+            padding: 20px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+
+            border-radius: 12px;
+
+            margin-bottom: 30px;
+
+            display: flex;
+            gap: 15px;
+        }
+
+        .filters input,
+        .filters select {
+
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+        }
+
+        .search {
+            flex: 1;
+        }
+
+        #projectsContainer {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .project-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,0.08);
+
+        }
+
+        .project-card h2 {
+
+            color: #0f172a;
+
+            margin-bottom: 10px;
+
+        }
+
+        .category {
+
+            display: inline-block;
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .description {
+
+            color: #64748b;
+
+            line-height: 1.5;
+
+            margin-bottom: 15px;
+
+        }
+
+        .info {
+
+            color: #334155;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+        }
+
+        .view-btn {
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+        .view-btn:hover {
+
+            background: #1d4ed8;
+
+        }
+
+        .empty {
+
+            background: white;
+
+            padding: 40px;
+
+            text-align: center;
+
+            border-radius: 15px;
+
+            grid-column: 1 / -1;
+
+        }
+
+        @media (max-width: 900px) {
+
+            #projectsContainer {
+
+                grid-template-columns: 1fr 1fr;
+
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .filters {
+
+                flex-direction: column;
+
+            }
+
+            #projectsContainer {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <div class="logo">
+        ProjectBridge
+    </div>
+
+    <a
+        href="company-dashboard.html"
+        class="back"
+    >
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+<div class="container">
+
+
+    <div class="heading">
+
+        <h1>
+            Explore Student Projects 🚀
+        </h1>
+
+        <p>
+            Discover innovative projects created by students.
+        </p>
+
+    </div>
+
+
+    <div class="filters">
+
+        <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="🔎 Search projects..."
+        >
+
+
+        <select id="category">
+
+            <option value="all">
+                All Categories
+            </option>
+
+            <option value="AI & Machine Learning">
+                AI & Machine Learning
+            </option>
+
+            <option value="Web Development">
+                Web Development
+            </option>
+
+            <option value="App Development">
+                App Development
+            </option>
+
+            <option value="Data Science">
+                Data Science
+            </option>
+
+            <option value="IoT">
+                IoT
+            </option>
+
+            <option value="Cyber Security">
+                Cyber Security
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div id="projectsContainer"></div>
+
+
+</div>
+
+
+<script>
+
+
+const user = JSON.parse(
+    localStorage.getItem("projectBridgeUser")
+);
+
+
+if (!user || user.role !== "company") {
+
+    window.location.href = "login.html";
+
+}
+
+
+const searchInput =
+    document.getElementById("search");
+
+const categorySelect =
+    document.getElementById("category");
+
+const container =
+    document.getElementById("projectsContainer");
+
+
+function loadProjects() {
+
+
+    const projects = JSON.parse(
+
+        localStorage.getItem(
+            "projectBridgeProjects"
+        )
+
+    ) || [];
+
+
+    const searchText =
+        searchInput.value.toLowerCase();
+
+
+    const selectedCategory =
+        categorySelect.value;
+
+
+    const filteredProjects =
+        projects.filter(function(project) {
+
+
+            const matchesSearch =
+
+                project.projectName
+                    .toLowerCase()
+                    .includes(searchText)
+
+                ||
+
+                project.description
+                    .toLowerCase()
+                    .includes(searchText)
+
+                ||
+
+                project.technologies
+                    .toLowerCase()
+                    .includes(searchText);
+
+
+            const matchesCategory =
+
+                selectedCategory === "all"
+
+                ||
+
+                project.category ===
+                    selectedCategory;
+
+
+            return (
+                matchesSearch &&
+                matchesCategory
+            );
+
+        });
+
+
+    container.innerHTML = "";
+
+
+    if (filteredProjects.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <h2>
+                    No projects found 😔
+                </h2>
+
+                <p>
+                    Try another search or category.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    filteredProjects.forEach(
+        function(project) {
+
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "project-card";
+
+
+            card.innerHTML = `
+
+                <h2>
+                    ${project.projectName}
+                </h2>
+
+                <span class="category">
+                    ${project.category}
+                </span>
+
+                <p class="description">
+                    ${project.description}
+                </p>
+
+                <p class="info">
+                    💻
+                    <strong>Technologies:</strong>
+                    ${project.technologies}
+                </p>
+
+                <p class="info">
+                    👥
+                    <strong>Team:</strong>
+                    ${project.team}
+                </p>
+
+                <p class="info">
+                    🎓
+                    <strong>Student:</strong>
+                    ${project.owner}
+                </p>
+
+                <button
+                    class="view-btn"
+                    onclick="viewProject(${project.id})"
+                >
+                    View Project
+                </button>
+
+            `;
+
+
+            container.appendChild(card);
+
+        }
+    );
+
+} function viewProject
+(id) {
+
+    window.location.href =
+        "project-details.html?id=" + id;
+
+}
+
+
+
+       
+
+
+searchInput.addEventListener(
+    "input",
+    loadProjects
+);
+
+
+categorySelect.addEventListener(
+    "change",
+    loadProjects
+);
+
+
+loadProjects();
+
+
+</script>
+
+
+</body>
+
+</html>

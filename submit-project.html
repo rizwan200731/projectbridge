@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Submit Project - ProjectBridge</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+        }
+
+        nav {
+            background: #0f172a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .form-box {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        ProjectBridge
+    </div>
+
+    <a href="student-dashboard.html" class="back">
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="form-box">
+
+        <h1>Submit Your Project 🚀</h1>
+
+        <p class="subtitle">
+            Showcase your project and connect with companies.
+        </p>
+
+
+        <form id="projectForm">
+
+            <label>Project Name</label>
+
+            <input
+                type="text"
+                id="projectName"
+                placeholder="Enter project name"
+                required
+            >
+
+
+            <label>Project Description</label>
+
+            <textarea
+                id="description"
+                placeholder="Explain what your project does..."
+                required
+            ></textarea>
+
+
+            <label>Project Category</label>
+
+            <select id="category" required>
+
+                <option value="">
+                    Select category
+                </option>
+
+                <option value="AI & Machine Learning">
+                    AI & Machine Learning
+                </option>
+
+                <option value="Web Development">
+                    Web Development
+                </option>
+
+                <option value="App Development">
+                    App Development
+                </option>
+
+                <option value="Data Science">
+                    Data Science
+                </option>
+
+                <option value="IoT">
+                    IoT
+                </option>
+
+                <option value="Cyber Security">
+                    Cyber Security
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+
+            <label>Technologies Used</label>
+
+            <input
+                type="text"
+                id="technologies"
+                placeholder="Example: Python, React, MySQL"
+                required
+            >
+
+
+            <label>Team Members</label>
+
+            <input
+                type="text"
+                id="team"
+                placeholder="Example: Rizwan, Arun, Rahul"
+                required
+            >
+
+
+            <label>GitHub Link (Optional)</label>
+
+            <input
+                type="url"
+                id="github"
+                placeholder="https://github.com/..."
+            >
+
+
+            <label>Demo Link (Optional)</label>
+
+            <input
+                type="url"
+                id="demo"
+                placeholder="https://..."
+            >
+
+
+            <label>Competition / Achievement</label>
+
+            <input
+                type="text"
+                id="achievement"
+                placeholder="Example: College Hackathon 2026"
+            >
+
+
+            <button type="submit">
+                Submit Project 🚀
+            </button>
+
+        </form>
+
+        <div class="message" id="message"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const user = JSON.parse(
+    localStorage.getItem("projectBridgeUser")
+);
+
+if (!user || user.role !== "student") {
+
+    window.location.href = "login.html";
+
+}
+
+
+document.getElementById("projectForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+
+    const project = {
+
+        id: Date.now(),
+
+        owner: user.name,
+
+        ownerEmail: user.email,
+
+        projectName:
+            document.getElementById("projectName").value,
+
+        description:
+            document.getElementById("description").value,
+
+        category:
+            document.getElementById("category").value,
+
+        technologies:
+            document.getElementById("technologies").value,
+
+        team:
+            document.getElementById("team").value,
+
+        github:
+            document.getElementById("github").value,
+
+        demo:
+            document.getElementById("demo").value,
+
+        achievement:
+            document.getElementById("achievement").value
+
+    };
+
+
+    let projects = JSON.parse(
+        localStorage.getItem("projectBridgeProjects")
+    ) || [];
+
+
+    projects.push(project);
+
+
+    localStorage.setItem(
+        "projectBridgeProjects",
+        JSON.stringify(projects)
+    );
+
+
+    document.getElementById("message").textContent =
+        "✅ Project submitted successfully!";
+
+
+    document.getElementById("projectForm").reset();
+
+
+    setTimeout(function() {
+
+        window.location.href =
+            "student-dashboard.html";
+
+    }, 1500);
+
+});
+
+</script>
+
+</body>
+
+</html>

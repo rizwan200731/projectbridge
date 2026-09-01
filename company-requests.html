@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Company Requests - ProjectBridge</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+        }
+
+        nav {
+            background: #0f172a;
+            color: white;
+
+            padding: 20px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #0f172a;
+
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+
+            margin-bottom: 30px;
+        }
+
+        .request-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .request-card h2 {
+
+            color: #0f172a;
+
+            margin-bottom: 10px;
+        }
+
+        .request-card p {
+
+            color: #475569;
+
+            margin-bottom: 8px;
+        }
+
+        .status {
+
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            margin-top: 10px;
+        }
+
+        .pending {
+
+            background: #fef3c7;
+
+            color: #92400e;
+        }
+
+        .accepted {
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .rejected {
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        .buttons {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .accept-btn,
+        .reject-btn {
+
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .accept-btn {
+
+            background: #16a34a;
+
+            color: white;
+        }
+
+        .reject-btn {
+
+            background: #dc2626;
+
+            color: white;
+        }
+
+        .empty {
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 15px;
+
+            text-align: center;
+        }
+
+        .empty h2 {
+
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+
+            color: #64748b;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <div class="logo">
+        ProjectBridge
+    </div>
+
+    <a
+        href="student-dashboard.html"
+        class="back"
+    >
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+<div class="container">
+
+    <h1>
+        Company Requests 📩
+    </h1>
+
+    <p class="subtitle">
+        Manage companies interested in your projects.
+    </p>
+
+
+    <div id="requestsContainer"></div>
+
+</div>
+
+
+<script>
+
+
+const user = JSON.parse(
+    localStorage.getItem("projectBridgeUser")
+);
+
+
+if (!user || user.role !== "student") {
+
+    window.location.href = "login.html";
+
+}
+
+
+function loadRequests() {
+
+
+    const requests = JSON.parse(
+
+        localStorage.getItem(
+            "projectBridgeRequests"
+        )
+
+    ) || [];
+
+
+    const myRequests = requests.filter(
+
+        request =>
+            request.studentEmail === user.email
+
+    );
+
+
+    const container =
+        document.getElementById(
+            "requestsContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (myRequests.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <h2>
+                    No Company Requests Yet 📭
+                </h2>
+
+                <p>
+                    Companies interested in your
+                    projects will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    myRequests.forEach(function(request) {
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "request-card";
+
+
+        let statusClass =
+            request.status.toLowerCase();
+
+
+        let buttons = "";
+
+
+        if (request.status === "Pending") {
+
+            buttons = `
+
+                <div class="buttons">
+
+                    <button
+                        class="accept-btn"
+                        onclick="updateRequest(${request.id}, 'Accepted')"
+                    >
+                        ✅ Accept
+                    </button>
+
+                    <button
+                        class="reject-btn"
+                        onclick="updateRequest(${request.id}, 'Rejected')"
+                    >
+                        ❌ Reject
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+
+
+        card.innerHTML = `
+
+            <h2>
+                🏢 ${request.companyName}
+            </h2>
+
+            <p>
+                <strong>Project:</strong>
+                ${request.projectName}
+            </p>
+
+            <p>
+                <strong>Company Email:</strong>
+                ${request.companyEmail}
+            </p>
+
+            <span class="status ${statusClass}">
+                ${request.status}
+            </span>
+
+            ${buttons}
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+function updateRequest(id, status) {
+
+
+    let requests = JSON.parse(
+
+        localStorage.getItem(
+            "projectBridgeRequests"
+        )
+
+    ) || [];
+
+
+    requests = requests.map(
+        function(request) {
+
+            if (request.id === id) {
+
+                request.status = status;
+
+            }
+
+            return request;
+
+        }
+    );
+
+
+    localStorage.setItem(
+
+        "projectBridgeRequests",
+
+        JSON.stringify(requests)
+
+    );
+
+
+    loadRequests();
+
+}
+
+
+loadRequests();
+
+
+</script>
+
+
+</body>
+
+</html>

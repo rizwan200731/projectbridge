@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard - ProjectBridge</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+        }
+
+        nav {
+            background: #0f172a;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logout {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 40px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .card button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        ProjectBridge
+    </div>
+
+    <button class="logout" onclick="logout()">
+        Logout
+    </button>
+
+</nav>
+
+<div class="container">
+
+    <div class="welcome">
+
+        <h1>
+            Welcome, <span id="studentName"></span> 👋
+        </h1>
+
+        <p>
+            Manage your projects and connect with companies.
+        </p>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h2>📤 Submit Project</h2>
+
+            <p>
+                Add your project to ProjectBridge.
+            </p>
+
+            <button onclick="window.location.href='submit-project.html'">
+    Submit Project
+</button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📁 My Projects</h2>
+
+            <p>
+                View and manage your submitted projects.
+            </p>
+<button onclick="window.location.href='my-projects.html'">
+    View Projects
+</button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🏢 Company Interest</h2>
+
+            <p>
+                See companies interested in your projects.
+            </p>
+
+            <button onclick="window.location.href='company-requests.html'">
+    View Requests
+</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const user = JSON.parse(
+    localStorage.getItem("projectBridgeUser")
+);
+
+if (!user || user.role !== "student") {
+
+    window.location.href = "login.html";
+
+}
+
+document.getElementById("studentName").textContent = user.name;
+
+function logout() {
+
+    localStorage.removeItem("loggedIn");
+
+    window.location.href = "index.html";
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Projects - ProjectBridge</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+        }
+
+        nav {
+            background: #0f172a;
+            color: white;
+            padding: 20px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .back {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .heading {
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+        }
+
+        #projectsContainer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .project-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .project-card h2 {
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .category {
+            display: inline-block;
+
+            background: #dbeafe;
+            color: #1d4ed8;
+
+            padding: 6px 10px;
+            border-radius: 20px;
+
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .info {
+            margin-bottom: 10px;
+            color: #334155;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .view-btn,
+        .delete-btn {
+
+            border: none;
+            padding: 10px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .view-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty p {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            background: #2563eb;
+            color: white;
+
+            border: none;
+            padding: 12px 20px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+
+            #projectsContainer {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            #projectsContainer {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <div class="logo">
+        ProjectBridge
+    </div>
+
+    <a href="student-dashboard.html" class="back">
+        ← Dashboard
+    </a>
+
+</nav>
+
+
+<div class="container">
+
+
+    <div class="heading">
+
+        <h1>
+            My Projects 📁
+        </h1>
+
+        <p>
+            Manage the projects you have submitted to ProjectBridge.
+        </p>
+
+    </div>
+
+
+    <div id="projectsContainer"></div>
+
+
+</div>
+
+
+<script>
+
+
+const user = JSON.parse(
+    localStorage.getItem("projectBridgeUser")
+);
+
+
+if (!user || user.role !== "student") {
+
+    window.location.href = "login.html";
+
+}
+
+
+function loadProjects() {
+
+
+    const projects = JSON.parse(
+        localStorage.getItem("projectBridgeProjects")
+    ) || [];
+
+
+    const myProjects = projects.filter(
+        project => project.ownerEmail === user.email
+    );
+
+
+    const container =
+        document.getElementById("projectsContainer");
+
+
+    container.innerHTML = "";
+
+
+    if (myProjects.length === 0) {
+
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <h2>No Projects Yet 📂</h2>
+
+                <p>
+                    You haven't submitted any projects yet.
+                </p>
+
+                <button
+                    class="submit-btn"
+                    onclick="window.location.href='submit-project.html'"
+                >
+                    Submit Your First Project
+                </button>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    myProjects.forEach(function(project) {
+
+
+        const card = document.createElement("div");
+
+        card.className = "project-card";
+
+
+        card.innerHTML = `
+
+            <h2>
+                ${project.projectName}
+            </h2>
+
+            <span class="category">
+                ${project.category}
+            </span>
+
+            <p class="description">
+                ${project.description}
+            </p>
+
+            <p class="info">
+                💻 <strong>Technologies:</strong>
+                ${project.technologies}
+            </p>
+
+            <p class="info">
+                👥 <strong>Team:</strong>
+                ${project.team}
+            </p>
+
+            <div class="buttons">
+
+                <button
+                    class="view-btn"
+                    onclick="viewProject(${project.id})"
+                >
+                    View
+                </button>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteProject(${project.id})"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+function viewProject(id) {
+
+
+    const projects = JSON.parse(
+        localStorage.getItem("projectBridgeProjects")
+    ) || [];
+
+
+    const project = projects.find(
+        project => project.id === id
+    );
+
+
+    if (!project) {
+
+        alert("Project not found.");
+
+        return;
+
+    }
+
+
+    alert(
+
+        "PROJECT: " + project.projectName +
+
+        "\n\nDESCRIPTION:\n" +
+        project.description +
+
+        "\n\nCATEGORY:\n" +
+        project.category +
+
+        "\n\nTECHNOLOGIES:\n" +
+        project.technologies +
+
+        "\n\nTEAM:\n" +
+        project.team
+
+    );
+
+}
+
+
+function deleteProject(id) {
+
+
+    const confirmDelete = confirm(
+        "Are you sure you want to delete this project?"
+    );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    let projects = JSON.parse(
+        localStorage.getItem("projectBridgeProjects")
+    ) || [];
+
+
+    projects = projects.filter(
+        project => project.id !== id
+    );
+
+
+    localStorage.setItem(
+        "projectBridgeProjects",
+        JSON.stringify(projects)
+    );
+
+
+    loadProjects();
+
+}
+
+
+loadProjects();
+
+
+</script>
+
+
+</body>
+
+</html>
